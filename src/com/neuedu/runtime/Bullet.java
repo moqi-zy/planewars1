@@ -15,7 +15,9 @@ import java.util.List;
 public class Bullet extends BaseSprite implements Moveable, Drawable {
 
     private Image image;
-    private int speed = FrameConstant.GAME_SPEED * 1;
+    private Image image1;
+    private int speed = FrameConstant.GAME_SPEED * 4;
+
 
     public Bullet() {
         this(0,0, ImageMap.get("myb01"));
@@ -24,13 +26,20 @@ public class Bullet extends BaseSprite implements Moveable, Drawable {
     public Bullet(int x, int y, Image image) {
         super(x, y);
         this.image = image;
+        this.image1 = ImageMap.get("myb02") ;
     }
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(image,getX(),getY(),image.getWidth(null),image.getHeight(null),null);
         move();
-       // borderTesting();
+        borderTesting();
+        GameFrame gameFrame = DateStore.get("gameFrame");
+        if (gameFrame.empiricValue < 60){
+            g.drawImage(image,getX()-12,getY(),image.getWidth(null)/2,image.getHeight(null)/2,null);
+
+        }else {
+            g.drawImage(image1,getX()-12,getY(),image.getWidth(null)/2,image1.getHeight(null)/2,null) ;
+        }
     }
 
     @Override
@@ -56,10 +65,21 @@ public class Bullet extends BaseSprite implements Moveable, Drawable {
             if (enemyPlane.getRectangle().intersects(this.getRectangle())){
                 enemyPlaneList.remove(enemyPlane);
                 gameFrame.bulletList.remove(this);
+                gameFrame.score += enemyPlane.getType() * 1;
+                //生命值
+                gameFrame.empiricValue++;
+
             }
 
         }
     }
+    //我方子弹对boss的伤害
+    public void collisionTesting(Boss boss){
+        GameFrame gameFrame =DateStore.get("gameFrame");
+        if (boss.getRectangle().intersects(this.getRectangle())){
+            gameFrame.bulletList.remove(this);
+            gameFrame.bosslife -= 5;
 
-
+        }
+    }
 }

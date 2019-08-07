@@ -11,15 +11,15 @@ import com.neuedu.util.ImageMap;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-
 public class Plane extends BaseSprite implements Moveable, Drawable {
 
-
+    public static int type;
     private Image image;
     private boolean up, right, down,left;
     private boolean fire;
 
     private int speed = FrameConstant.GAME_SPEED * 3;
+    private final int WIDTHPLUS = ImageMap.get("ep02").getWidth(null);
 
     public Plane() {
         this((FrameConstant.FRAME_WIDTH - ImageMap.get("my01").getWidth(null))/2,
@@ -35,10 +35,10 @@ public class Plane extends BaseSprite implements Moveable, Drawable {
 
     @Override
     public void draw(Graphics g) {
-
-        g.drawImage(image,getX(),getY(),image.getWidth(null)/2,image.getHeight(null)/2,null);
         move();
-        fire();
+        g.drawImage(image,getX(),getY(),image.getWidth(null)/4*3,image.getHeight(null)/4*3,null);
+       /* System.out.println("1111111");
+        fire();*/
        /* fire();
         if (fire){
             index++;
@@ -49,7 +49,7 @@ public class Plane extends BaseSprite implements Moveable, Drawable {
         }
 */
     }
-   // private int index = 0;
+   private int index ;
 
     /**
      * 开火方法
@@ -62,14 +62,23 @@ public class Plane extends BaseSprite implements Moveable, Drawable {
             GameFrame gameFrame = DateStore.get("gameFrame");
             gameFrame.bulletList.add(new Bullet(
                     getX() + (image.getWidth(null)/2) - (ImageMap.get("myb01").getWidth(null)/2),
-                    getY() - ImageMap.get("myb01").getHeight(null),
+                    getY() - ImageMap.get("myb01").getHeight(null)/2,
                     ImageMap.get("myb01")
             ) );
-
-
+     /*   }else if (type == 2){
+            GameFrame gameFrame = DateStore.get("gameFrame");
+            gameFrame.bulletList.add(new Bullet(
+                    getX() + (image.getWidth(null)/2) - (ImageMap.get("myb02").getWidth(null)/2),
+                    getY() - ImageMap.get("myb02").getHeight(null)/2,
+                    ImageMap.get("myb02")
+            ) );
+*/
         }
-
     }
+    /**
+     * 产生敌机
+     * 只要我方飞机活着  重绘的时候就调用此方法来生成敌机
+     */
     @Override
     public void move() {
         if (up){
@@ -147,5 +156,8 @@ public class Plane extends BaseSprite implements Moveable, Drawable {
         return new Rectangle(getX(),getY(),image.getWidth(null),image.getHeight(null));
     }
 
-
+     //声明生命值
+    public boolean life() {
+        return life();
+    }
 }

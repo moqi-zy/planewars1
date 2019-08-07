@@ -5,7 +5,15 @@ import java.awt.*;
 public abstract class BaseSprite {
     private int x;
     private int y;
+/*
 
+    //总血量
+    public int total;
+    //血
+    public int hp;
+    //攻击
+    public int attack;
+*/
 
     public BaseSprite() {
     }

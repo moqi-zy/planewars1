@@ -12,8 +12,7 @@ public class ImageUtil {
     public static Image getImage(String path){
 
         Image image = null;
-        try {
-            image = ImageIO.read(ImageUtil.class.getClassLoader().getResourceAsStream(path));
+        try { image = ImageIO.read(ImageUtil.class.getClassLoader().getResourceAsStream(path));
         }catch (IOException e){
             e.printStackTrace();
         }

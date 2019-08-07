@@ -6,23 +6,29 @@ import com.neuedu.base.Moveable;
 import com.neuedu.constant.FrameConstant;
 import com.neuedu.main.GameFrame;
 import com.neuedu.util.DateStore;
+import com.neuedu.util.ImageMap;
+
 import java.awt.*;
 
-public class EnemyBullet extends BaseSprite implements Moveable, Drawable {
+public class BossButtle extends BaseSprite implements Moveable, Drawable{
     private Image image;
-    private int speed = FrameConstant.GAME_SPEED * 5;
-    private EnemyPlane enemyPlane;
-    public EnemyBullet() {
+    private int ButtleType;
+    private final int speed = FrameConstant.GAME_SPEED * 6;
+
+    public BossButtle() {
+        this(0,0,ImageMap.get("boss01"));
     }
-    public EnemyBullet(int x, int y, Image image) {
+
+    public BossButtle(int x, int y, Image image) {
         super(x, y);
         this.image = image;
     }
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(image,getX(),getY(),image.getWidth(null),image.getHeight(null),null);
         move();
-        g.drawImage(image,getX()-38,getY(),image.getWidth(null)*2/3,image.getHeight(null)*2/3,null);
+
     }
 
     @Override
@@ -30,23 +36,21 @@ public class EnemyBullet extends BaseSprite implements Moveable, Drawable {
         setY(getY() + speed);
         borderTesting();
     }
-    public  void borderTesting(){
+    public void borderTesting(){
         if (getY() > FrameConstant.FRAME_HEIGHT){
             GameFrame gameFrame = DateStore.get("gameFrame");
-            gameFrame.enemyBulletList.remove(this);
-
+            gameFrame.bossButtles.remove(this);
         }
     }
     @Override
     public Rectangle getRectangle(){
         return new Rectangle(getX(),getY(),image.getWidth(null),image.getHeight(null));
     }
-
     public void collisionTesting(Plane plane){
         GameFrame gameFrame = DateStore.get("gameFrame");
         if (plane.getRectangle().intersects(this.getRectangle())){
-          gameFrame.enemyBulletList.remove(this);
-        //  gameFrame.life += enemyPlane.getType() * 2;
+            gameFrame.bossButtles.remove(this);
+            //  gameFrame.life += enemyPlane.getType() * 2;
             gameFrame.life--;
             if (gameFrame.life==0){gameFrame.gameOver = true;}
         }
